@@ -1,0 +1,69 @@
+server:
+  port: ${env.PORT}
+  servlet:
+    context-path: ${env.CONTEXT_PATH}
+spring:
+  cloud:
+    config:
+      enabled: false
+      password: ${env.CLOUD_CONFIG_PASSWORD}
+      username: ${env.CLOUD_CONFIG_USERNAME}
+      uri: ${env.CLOUD_CONFIG_URI}
+  r2dbc:
+    url: ${env.DB_URL}
+    username: ${env.DB_USERNAME}
+    password: ${env.DB_PASSWORD}
+    pool:
+      enabled: true
+      max-size: 500
+      initial-size: 100
+      max-idle-time: 30m
+      max-life-time: 1h
+      validation-query: SELECT 1
+
+  flyway:
+    enabled: true
+    url: ${env.FLYWAY_URL}
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 1.0.0
+    schemas: ${env.FLYWAY_SCHEMA}
+    placeholder-replacement: true
+    validate-on-migrate: true
+
+  data:
+    redis:
+      host: ${env.REDIS_HOST}
+      port: ${env.REDIS_PORT}
+      password: ${env.REDIS_PASSWORD}
+      username: ${env.REDIS_USERNAME}
+  rabbitmq:
+    host: ${env.RABBITMQ_HOST}
+    port: ${env.RABBITMQ_PORT}
+    username: ${env.RABBITMQ_USERNAME}
+    password: ${env.RABBITMQ_PASSWORD}
+
+queues:
+  message-queue:
+    name: ${env.MESSAGE_QUEUE_NAME}
+    exchange: ${env.MESSAGE_QUEUE_EXCHANGE}
+    routing-key: ${env.MESSAGE_QUEUE_ROUTING_KEY}
+    max-priority: ${env.MESSAGE_QUEUE_MAX_PRIORITY}
+    durable: ${env.MESSAGE_QUEUE_DURABLE}
+
+
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    org.springframework.web.reactive: debug
+    io.r2dbc.mysql: trace
+    org.springframework.data.r2dbc: trace
+    org.springframework.data.r2dbc.connectionfactory: trace
+    org.springframework.data.r2dbc.core: trace
+    org.springframework.data.r2dbc.repository: trace
+    web: debug
+  charset:
+    file: UTF-8
