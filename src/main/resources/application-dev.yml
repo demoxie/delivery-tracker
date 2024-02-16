@@ -10,7 +10,7 @@ spring:
       username: ${env.CLOUD_CONFIG_USERNAME}
       uri: ${env.CLOUD_CONFIG_URI}
   r2dbc:
-    url: ${env.DB_URL}
+    url: r2dbc:mysql://${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}
     username: ${env.DB_USERNAME}
     password: ${env.DB_PASSWORD}
     pool:
